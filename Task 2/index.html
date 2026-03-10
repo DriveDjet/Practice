@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+            background: linear-gradient(45deg, #2b3a67, #5d4e6d, #8b6b7c, #a87b7b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .counter-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .result {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            padding: 1.5rem 3rem;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            min-width: 250px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .result.positive {
+            background: linear-gradient(145deg, #FFE55C, #FFD700, #FDB931);
+            color: #4a3b00;
+        }
+
+        .result.negative {
+            background: linear-gradient(145deg, #43C6AC, #2E8B57, #1B4D3E);
+            color: #e8f5e9;
+        }
+
+        .result.zero {
+            background: linear-gradient(145deg, #FF6B6B, #FF4757, #EE5A24);
+            color: white;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            font-size: 3rem;
+            width: 100px;
+            height: 100px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: opacity 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+
+            background: linear-gradient(145deg, #FF512F, #DD2476, #FF512F);
+            background-size: 200% 200%;
+            animation: buttonGradient 5s ease infinite;
+        }
+
+        .btn.minus {
+            background: linear-gradient(145deg, #FF416C, #FF4B2B, #FF416C);
+            background-size: 200% 200%;
+            animation: buttonGradient 5s ease infinite reverse;
+        }
+
+        .btn.plus {
+            background: linear-gradient(145deg, #00C9FF, #92FE9D, #00C9FF);
+            background-size: 200% 200%;
+            animation: buttonGradient 5s ease infinite;
+        }
+
+        @keyframes buttonGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn:hover:not(:disabled) {
+            opacity: 0.9;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: white;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            animation: none;
+            filter: grayscale(50%);
+        }
+
+        .extreme-message {
+            font-size: 1.3rem;
+            padding: 1.2rem;
+            border-radius: 15px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            color: white;
+            margin-top: 1.5rem;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .extreme-message.active {
+            background: linear-gradient(145deg, #FFD700, #FFA500, #FF8C00);
+            color: #4a3b00;
+            border-color: white;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .counter-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            padding: 0.5rem 2rem;
+            border-radius: 50px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="counter-container">
+        <div class="counter-title">Градиентный счетчик</div>
+
+        <div class="result zero" id="result">0</div>
+
+        <div class="buttons">
+            <button class="btn minus" id="minusBtn">-</button>
+            <button class="btn plus" id="plusBtn">+</button>
+        </div>
+
+        <div class="extreme-message" id="extremeMessage"></div>
+    </div>
+
+    <script>
+        const resultElement = document.getElementById('result');
+        const minusBtn = document.getElementById('minusBtn');
+        const plusBtn = document.getElementById('plusBtn');
+        const extremeMessage = document.getElementById('extremeMessage');
+
+        let counter = 0;
+
+        function updateResultColor() {
+            resultElement.classList.remove('positive', 'negative', 'zero');
+
+            if (counter > 0) {
+                resultElement.classList.add('positive');
+            } else if (counter < 0) {
+                resultElement.classList.add('negative');
+            } else {
+                resultElement.classList.add('zero');
+            }
+        }
+
+        function updateButtonsState() {
+            minusBtn.disabled = counter <= -10;
+            plusBtn.disabled = counter >= 10;
+        }
+
+
+        function updateExtremeMessage() {
+            if (counter === 10 || counter === -10) {
+                extremeMessage.textContent = '⚡ Достигнут экстремальный предел! ⚡';
+                extremeMessage.classList.add('active');
+            } else {
+                extremeMessage.textContent = '';
+                extremeMessage.classList.remove('active');
+            }
+        }
+
+        function updateCounter() {
+            resultElement.textContent = counter;
+            updateResultColor();
+            updateButtonsState();
+            updateExtremeMessage();
+        }
+
+        plusBtn.addEventListener('click', () => {
+            if (counter < 10) {
+                counter++;
+                updateCounter();
+            }
+        });
+
+        minusBtn.addEventListener('click', () => {
+            if (counter > -10) {
+                counter--;
+                updateCounter();
+            }
+        });
+
+        updateCounter();
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '+' || event.key === '=') {
+                event.preventDefault();
+                if (!plusBtn.disabled && counter < 10) {
+                    counter++;
+                    updateCounter();
+                }
+            } else if (event.key === '-' || event.key === '_') {
+                event.preventDefault();
+                if (!minusBtn.disabled && counter > -10) {
+                    counter--;
+                    updateCounter();
+                }
+            }
+        });
+
+        if ('ontouchstart' in window) {
+            plusBtn.style.cursor = 'pointer';
+            minusBtn.style.cursor = 'pointer';
+        }
+    </script>
+</body>
+</html>
