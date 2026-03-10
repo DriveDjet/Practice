@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Калькулятор</title>
+    <link rel="stylesheet" href="{% static 'calculator/css/style.css' %}">
+</head>
+<body>
+    <div class="calculator">
+        <h2>🧮 Django Калькулятор</h2>
+
+        <div class="inputs">
+            <div class="input-field">
+                <label for="num1">Первое число</label>
+                <input type="text" id="num1" placeholder="Введите число" value="10">
+            </div>
+            <div class="input-field">
+                <label for="num2">Второе число</label>
+                <input type="text" id="num2" placeholder="Введите число" value="5">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn sum" data-operation="sum">Сумма</button>
+            <button class="btn diff" data-operation="difference">Разность</button>
+            <button class="btn mult" data-operation="product">Произведение</button>
+            <button class="btn div" data-operation="division">Деление</button>
+        </div>
+
+        <div class="result">
+            <label for="resultBox">Результат:</label>
+            <div class="result-box" id="resultBox">0</div>
+        </div>
+
+        <div class="footer">
+            Введите числа и нажмите нужную операцию
+        </div>
+    </div>
+
+    <script src="{% static 'calculator/js/calculator.js' %}"></script>
+</body>
+</html>
